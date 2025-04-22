@@ -36,7 +36,8 @@ def send_bark_notification(current_price, drop_percent, yesterday_close, timesta
 
 @app.route("/")
 def index():
-    return "✅ Flask 伺服器正常運作中"
+    # 這裡使用 redirect 跳轉到 /report
+    return redirect(url_for("stock_report"))
 
 @app.route("/health")
 def health():
