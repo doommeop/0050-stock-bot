@@ -1,4 +1,3 @@
-# main.py
 from flask import Flask
 import yfinance as yf
 import os
@@ -36,6 +35,14 @@ def send_bark_notification(current_price, drop_percent, yesterday_close, timesta
     requests.get(url)
 
 @app.route("/")
+def index():
+    return "✅ Flask 伺服器正常運作中"
+
+@app.route("/health")
+def health():
+    return "OK", 200
+
+@app.route("/report")
 def stock_report():
     result = get_0050_price_and_change()
     if result:
@@ -54,3 +61,4 @@ def stock_report():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
