@@ -26,7 +26,7 @@ def get_0050_price_and_change():
     return current_price, drop_percent, yesterday_close, timestamp
 
 def send_bark_notification(current_price, drop_percent, yesterday_close, timestamp):
-    bark_token = os.getenv("BARK_TOKEN")
+    bark_token = os.getenv("bark-key")
     if not bark_token:
         return "❌ 未設定 BARK_TOKEN"
     bark_url_base = f"https://api.day.app/{bark_token}"
