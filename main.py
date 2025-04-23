@@ -50,11 +50,8 @@ def stock_report():
         current_price, drop_percent, yesterday_close, timestamp = result
         send_bark_notification(current_price, drop_percent, yesterday_close, timestamp)
         return (
-            f"✅ 0050 即時報告\n"
-            f"時間：{timestamp}\n"
-            f"現價：{current_price:.2f}\n"
-            f"昨日收：{yesterday_close:.2f}\n"
-            f"漲跌：{drop_percent:.2f}%"
+            "傳送成功"
+
         )
     else:
         return "❌ 資料不足或無法取得"
