@@ -49,10 +49,9 @@ def stock_report():
     if result:
         current_price, drop_percent, yesterday_close, timestamp = result
         send_bark_notification(current_price, drop_percent, yesterday_close, timestamp)
-        return (
-            "ok" )
+        return Response("傳送成功", mimetype="text/plain")
     else:
-        return "資料不足或無法取得"
+        return Response("❌ 資料不足或無法取得", mimetype="text/plain")
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
