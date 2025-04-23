@@ -34,6 +34,16 @@ def get_vix_if_high():
         return vix_value
     return None
 
+def get_treasury_yield_30y_if_high():
+    tyx = yf.Ticker("^TYX")
+    data = tyx.history(period="1d")
+    if data.empty:
+        return None
+    latest_yield = data['Close'].iloc[-1]
+    if latest_yield > 4.9:
+        return latest_yield
+    return None
+
 def send_bark_notification(title, body):
     bark_token = os.getenv("bark-key")
     if not bark_token:
@@ -59,7 +69,7 @@ def stock_report():
         current_price, drop_percent, yesterday_close, timestamp = result
         if drop_percent <= -0.015:
             body = f"{timestamp}\n漲跌幅：{drop_percent*100:.2f}%\n現價：{current_price:.2f}\n昨日收：{yesterday_close:.2f}"
-            send_bark_notification("0050 跌幅警告", body)
+            send_bark_notification("📉 0050 跌幅警告", body)
             messages.append("✅ 傳送 0050 通知")
 
     # VIX 判斷與通知
@@ -69,9 +79,15 @@ def stock_report():
         send_bark_notification("⚠️ VIX 警告", body)
         messages.append("✅ 傳送 VIX 通知")
 
+    # 美債殖利率 判斷與通知
+    tyx_value = get_treasury_yield_30y_if_high()
+    if tyx_value:
+        body = f"30Y 美債殖利率過高：{tyx_value:.2f}%"
+        send_bark_notification("⚠️ 美債殖利率警告", body)
+        messages.append("✅ 傳送美債殖利率通知")
+
     return Response("\n".join(messages) if messages else "✅ 無需通知", mimetype="text/plain")
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
-
