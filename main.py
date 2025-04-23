@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for
+from flask import Flask, redirect, url_for, Response
 import yfinance as yf
 import os
 import requests
