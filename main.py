@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 def get_0050_price_and_change():
     stock = yf.Ticker("0050.TW")
-    data = stock.history(period="2d", interval="1m")
+    data = stock.history(period="2d", interval="30m")
     if data.empty or len(data) < 2:
         return None
 
